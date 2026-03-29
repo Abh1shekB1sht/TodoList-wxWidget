@@ -14,6 +14,7 @@ private:
 	void OnAddButtonClicked(wxCommandEvent& evt);
 	void OnInputEnter(wxCommandEvent& evt);
 	void onListKeyDown(wxKeyEvent& evt);
+	void OnClearButtonClicked(wxCommandEvent& evt);
 
 	// helper functions to add, delete, move and swap tasks
 	void AddTaskFromInput();

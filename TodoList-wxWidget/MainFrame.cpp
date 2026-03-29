@@ -38,6 +38,9 @@ void MainFrame::BindEventHandlers()
 
 	// binding the check list box to the (press any key) event handler
 	checkListBox->Bind(wxEVT_KEY_DOWN, &MainFrame::onListKeyDown, this);
+
+	// binding the clear button to the (click button) event handler
+	clearButton->Bind(wxEVT_BUTTON, &MainFrame::OnClearButtonClicked, this);
 }
 
 void MainFrame::OnAddButtonClicked(wxCommandEvent& evt)
@@ -52,12 +55,23 @@ void MainFrame::OnInputEnter(wxCommandEvent& evt)
 
 void MainFrame::onListKeyDown(wxKeyEvent& evt)
 {
-	// if the user presses the delete key, then we delete the selected task
+	// we check which key is pressed and call the corresponding function
 	switch (evt.GetKeyCode()) {
 		case WXK_DELETE:
 			DeleteSelectedTask();
-		break;
+			break;
+		case WXK_UP:
+			MoveSelectedTask(-1);
+			break;
+		case WXK_DOWN:
+			MoveSelectedTask(1);
+			break;
 	}
+}
+
+void MainFrame::OnClearButtonClicked(wxCommandEvent& evt)
+{
+
 }
 
 void MainFrame::AddTaskFromInput()
@@ -88,10 +102,32 @@ void MainFrame::DeleteSelectedTask()
 
 void MainFrame::MoveSelectedTask(int offset)
 {
+	int selectedIndex = checkListBox->GetSelection();
+	// if there is no selected task, then we do nothing
+	if (selectedIndex == wxNOT_FOUND) {
+		return;
+	}
 
+	int newIndex = selectedIndex + offset;
+	// if the new index is out of bounds, then we do nothing
+	if (newIndex < 0 || newIndex >= checkListBox->GetCount()) {
+		return;
+	}
+
+	// swap tasks and select the new index
+	SwapTasks(selectedIndex, newIndex);
+	checkListBox->SetSelection(newIndex, true);
 }
 
 void MainFrame::SwapTasks(int index1, int index2)
 {
+	// we create two Task objects to store the description and the done status of the tasks at index1 and index2
+	Task taskI { checkListBox->GetString(index1).ToStdString(), checkListBox->IsChecked(index1) };
+	Task taskJ { checkListBox->GetString(index2).ToStdString(), checkListBox->IsChecked(index2) };
 
+	checkListBox->SetString(index1, taskJ.description);
+	checkListBox->Check(index1, taskJ.done);
+
+	checkListBox->SetString(index2, taskI.description);
+	checkListBox->Check(index2, taskI.done);
 }
