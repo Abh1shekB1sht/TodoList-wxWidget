@@ -8,7 +8,7 @@ bool App::OnInit()
 	MainFrame* mainFrame = new MainFrame("Todo List");
 	mainFrame->SetSize(800, 600);
 	mainFrame->Center();
-	mainFrame->Show(true);
+	mainFrame->Show();
 	return true;
 }
 

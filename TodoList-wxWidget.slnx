@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="TodoList-wxWidget/TodoList-wxWidget.vcxproj" />
+  <Project Path="TodoList-wxWidget/TodoList-wxWidget.vcxproj" Id="9e3082d6-e806-41da-abdf-c903736798f7" />
 </Solution>
