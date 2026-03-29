@@ -34,7 +34,10 @@ void MainFrame::BindEventHandlers()
 	addButton->Bind(wxEVT_BUTTON, &MainFrame::OnAddButtonClicked, this);
 
 	// binding the input field to the (press enter) event handler 
-	inputField->Bind(wxEVT_TEXT_ENTER, &MainFrame::OnInputEnter, this);
+	inputField->Bind(wxEVT_TEXT_ENTER, &MainFrame::OnInputEnter, this);	
+
+	// binding the check list box to the (press any key) event handler
+	checkListBox->Bind(wxEVT_KEY_DOWN, &MainFrame::onListKeyDown, this);
 }
 
 void MainFrame::OnAddButtonClicked(wxCommandEvent& evt)
@@ -45,6 +48,16 @@ void MainFrame::OnAddButtonClicked(wxCommandEvent& evt)
 void MainFrame::OnInputEnter(wxCommandEvent& evt)
 {
 	AddTaskFromInput();
+}
+
+void MainFrame::onListKeyDown(wxKeyEvent& evt)
+{
+	// if the user presses the delete key, then we delete the selected task
+	switch (evt.GetKeyCode()) {
+		case WXK_DELETE:
+			DeleteSelectedTask();
+		break;
+	}
 }
 
 void MainFrame::AddTaskFromInput()
@@ -59,4 +72,26 @@ void MainFrame::AddTaskFromInput()
 
 	// regain focus
 	inputField->SetFocus();
+}
+
+void MainFrame::DeleteSelectedTask()
+{
+	// get the index of the selected task
+	int selectedIndex = checkListBox->GetSelection();
+
+	if (selectedIndex == wxNOT_FOUND) {
+		return;
+	}
+
+	checkListBox->Delete(selectedIndex);
+}
+
+void MainFrame::MoveSelectedTask(int offset)
+{
+
+}
+
+void MainFrame::SwapTasks(int index1, int index2)
+{
+
 }
