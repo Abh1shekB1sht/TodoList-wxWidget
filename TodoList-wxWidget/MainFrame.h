@@ -22,6 +22,7 @@ private:
 	void MoveSelectedTask(int offset);
 	void SwapTasks(int index1, int index2);
 
+	// member variables for controls
 	wxPanel* panel;
 	wxStaticText* headlineText;
 	wxTextCtrl* inputField;
