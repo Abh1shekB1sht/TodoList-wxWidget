@@ -71,7 +71,20 @@ void MainFrame::onListKeyDown(wxKeyEvent& evt)
 
 void MainFrame::OnClearButtonClicked(wxCommandEvent& evt)
 {
+	if (checkListBox->IsEmpty()) {
+		return;
+	}
 
+	// we create a message dialog to ask the user if they are sure they want to clear all tasks
+	wxMessageDialog dialog(this, "Are you sure you want to clear all Tasks?", "Clear Tasks", wxYES_NO | wxICON_QUESTION);
+
+	// we show the dialog and get the result
+	int result = dialog.ShowModal();
+
+	// if the user clicks "Yes", then we clear the check list box
+	if (result == wxID_YES) {
+		checkListBox->Clear();
+	}
 }
 
 void MainFrame::AddTaskFromInput()
@@ -97,6 +110,7 @@ void MainFrame::DeleteSelectedTask()
 		return;
 	}
 
+	// if there is a selected task, then we delete it from the check list box
 	checkListBox->Delete(selectedIndex);
 }
 
@@ -110,7 +124,7 @@ void MainFrame::MoveSelectedTask(int offset)
 
 	int newIndex = selectedIndex + offset;
 	// if the new index is out of bounds, then we do nothing
-	if (newIndex < 0 || newIndex >= checkListBox->GetCount()) {
+	if (newIndex < 0 || newIndex >= (int)checkListBox->GetCount()) {
 		return;
 	}
 
