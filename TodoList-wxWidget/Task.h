@@ -10,7 +10,7 @@ struct Task
 };
 
 // saveTasksToFile saves the task to the file
-void saveTasksToFile(const std::vector<Task>& tasks, const std::string& fileName);
+void SaveTasksToFile(const std::vector<Task>& tasks, const std::string& fileName);
 
 // loadTaskFromFile loads the task from the file
-std::vector<Task> loadTaskFromFile(const std::string& fileName);
+std::vector<Task> LoadTasksFromFile(const std::string& fileName);
