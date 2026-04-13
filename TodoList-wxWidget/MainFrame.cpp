@@ -8,6 +8,7 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title)
 {
 	CreateControls();
 	BindEventHandlers();
+	AddSavedTasks();
 }
 
 void MainFrame::CreateControls()
@@ -41,6 +42,20 @@ void MainFrame::BindEventHandlers()
 
 	// binding the clear button to the (click button) event handler
 	clearButton->Bind(wxEVT_BUTTON, &MainFrame::OnClearButtonClicked, this);
+
+	// binding the main frame to the (close window) event handler
+	this->Bind(wxEVT_CLOSE_WINDOW, &MainFrame::onWindowClosed, this);
+}
+
+void MainFrame::AddSavedTasks()
+{
+	std::vector<Task> tasks = LoadTasksFromFile("tasks.txt");
+
+	for (const Task& task : tasks) {
+		int index = checkListBox->GetCount();
+		checkListBox->Insert(task.description, index);
+		checkListBox->Check(index, task.done);
+	}
 }
 
 void MainFrame::OnAddButtonClicked(wxCommandEvent& evt)
@@ -85,6 +100,22 @@ void MainFrame::OnClearButtonClicked(wxCommandEvent& evt)
 	if (result == wxID_YES) {
 		checkListBox->Clear();
 	}
+}
+
+void MainFrame::onWindowClosed(wxCloseEvent& evt)
+{
+	std::vector<Task> tasks;
+
+	for (int i = 0; i < int(checkListBox->GetCount()); i++) {
+		Task task;
+		task.description = checkListBox->GetString(i);
+		task.done = checkListBox->IsChecked(i);
+		tasks.push_back(task);
+	}
+
+	// If file doesn't exist, it will be created or else be overwritten
+	SaveTasksToFile(tasks, "tasks.txt");
+	evt.Skip(); // we call Skip to allow the default close behavior to happen (closing the window)
 }
 
 void MainFrame::AddTaskFromInput()
