@@ -5,7 +5,7 @@
 #include <fstream>
 #include <algorithm>
 
-void saveTasksToFile(const std::vector<Task>& tasks, const std::string& fileName)
+void SaveTasksToFile(const std::vector<Task>& tasks, const std::string& fileName)
 {
     // output file stream to write to the file
     std::ofstream ostream(fileName);
@@ -21,7 +21,7 @@ void saveTasksToFile(const std::vector<Task>& tasks, const std::string& fileName
     }
 }
 
-std::vector<Task> loadTaskFromFile(const std::string& fileName)
+std::vector<Task> LoadTasksFromFile(const std::string& fileName)
 {
 	// if the file does not exist, return an empty vector of tasks
     if (!std::filesystem::exists(fileName)) {
